@@ -3,7 +3,6 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	"log"
 
 	"github.com/SawitProRecruitment/UserService/config"
 	"github.com/SawitProRecruitment/UserService/config/env"
@@ -22,10 +21,7 @@ import (
 var cfg *config.Config
 
 func init() {
-	err := godotenv.Load(".env")
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
+	godotenv.Load(".env")
 	envConfig := env.New()
 	config.Init(envConfig)
 	cfg = config.Load()
