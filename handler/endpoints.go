@@ -3,7 +3,6 @@ package handler
 import (
 	"fmt"
 	"net/http"
-	"strconv"
 
 	"github.com/SawitProRecruitment/UserService/handler/httpcontext"
 	"github.com/SawitProRecruitment/UserService/handler/middleware"
@@ -92,9 +91,12 @@ func (s *Server) UpdateProfile(c echo.Context) error {
 	}
 
 	ctx := c.Request().Context()
-	id, _ := strconv.ParseInt(c.Param("id"), 10, 64)
+	userJwt, ok := httpcontext.GetUserJWT(c)
+	if !ok {
+		return fmt.Errorf("cannot get user from context")
+	}
 	var payload service.PayloadUpdate
-	payload.Id = id
+	payload.Id = userJwt.ID
 	if err := bindAndValidate(c, &payload); err != nil {
 		return err
 	}
