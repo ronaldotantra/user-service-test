@@ -8,10 +8,22 @@
   */
 
 /** This is test table. Remove this table and replace with your own tables. */
-CREATE TABLE test (
-	id serial PRIMARY KEY,
-	name VARCHAR ( 50 ) UNIQUE NOT NULL,
+CREATE TABLE IF NOT EXISTS "users" (
+  "id" BIGSERIAL NOT NULL PRIMARY KEY,
+  "name" VARCHAR NOT NULL,
+  "phone" VARCHAR NOT NULL,
+  "password" VARCHAR NOT NULL,
+  "created_at" TIMESTAMPTZ(0),
+  "updated_at" TIMESTAMPTZ(0),
+  UNIQUE ("phone")
 );
 
-INSERT INTO test (name) VALUES ('test1');
-INSERT INTO test (name) VALUES ('test2');
+CREATE TABLE IF NOT EXISTS "user_tokens" (
+  "id" BIGSERIAL NOT NULL PRIMARY KEY,
+  "user_id" BIGINT NOT NULL,
+  "token" VARCHAR NOT NULL,
+  "count_login" INT NOT NULL,
+  "created_at" TIMESTAMPTZ(0),
+  "updated_at" TIMESTAMPTZ(0),
+  FOREIGN KEY ("user_id") REFERENCES "users" ("id")
+);

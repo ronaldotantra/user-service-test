@@ -3,24 +3,18 @@ package repository
 
 import (
 	"database/sql"
-
-	_ "github.com/lib/pq"
 )
 
-type Repository struct {
+type repository struct {
 	Db *sql.DB
 }
 
 type NewRepositoryOptions struct {
-	Dsn string
+	Db *sql.DB
 }
 
-func NewRepository(opts NewRepositoryOptions) *Repository {
-	db, err := sql.Open("postgres", opts.Dsn)
-	if err != nil {
-		panic(err)
-	}
-	return &Repository{
-		Db: db,
+func NewRepository(opts NewRepositoryOptions) RepositoryInterface {
+	return &repository{
+		Db: opts.Db,
 	}
 }
